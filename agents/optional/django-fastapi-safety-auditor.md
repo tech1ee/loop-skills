@@ -3,8 +3,7 @@ name: django-fastapi-safety-auditor
 description: >
   Use when auditing Django/FastAPI safety — migration correctness, cascade risks,
   serializer compatibility, N+1 query patterns. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: django migration; fastapi; pydantic; cascade delete; orm safety; python backend audit.
-  Use whenever the task fits. TRIGGER when: django migration; fastapi; pydantic; cascade delete; orm safety; python backend audit.
+  TRIGGER: django migration; fastapi; pydantic; cascade delete; orm safety; python backend audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

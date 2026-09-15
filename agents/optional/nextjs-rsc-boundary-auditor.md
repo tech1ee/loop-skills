@@ -3,8 +3,7 @@ name: nextjs-rsc-boundary-auditor
 description: >
   Use when auditing React Server Component boundary violations in Next.js codebases —
   missing use client directives, non-serializable props, data-fetch waterfalls. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: next.js rsc; server components; use client; RSC boundary; nextjs audit.
-  Use whenever the task fits. TRIGGER when: next.js rsc; server components; use client; RSC boundary; nextjs audit.
+  TRIGGER: next.js rsc; server components; use client; RSC boundary; nextjs audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

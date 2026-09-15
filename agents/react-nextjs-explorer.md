@@ -5,8 +5,7 @@ description: >
   Maps components, hooks, routing, server/client boundaries, data-fetch patterns, and
   state management. Read-only — returns file paths, line numbers, patterns.
   Prefer this over generic research-agent when the repo is React/Next.js/TypeScript.
-  Use whenever the task fits. TRIGGER when: react codebase; next.js explore; typescript frontend; RSC map; nextjs exploration.
-  Use whenever the task fits. TRIGGER when: react codebase; next.js explore; typescript frontend; RSC map; nextjs exploration.
+  TRIGGER: react codebase; next.js explore; typescript frontend; RSC map; nextjs exploration.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch
