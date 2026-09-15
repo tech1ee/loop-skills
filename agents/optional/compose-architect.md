@@ -1,6 +1,6 @@
 ---
 name: compose-architect
-description: Use proactively when building or refactoring Jetpack Compose / Compose Multiplatform UI, designing MVVM + UiState patterns, or decomposing large composables. Android 16 / SDK 36 / Material 3. Architecture and design phases — NOT implementation. Use whenever the task fits. TRIGGER when: compose architecture; ui state design; compose архитектура; MVVM compose. Use whenever the task fits. TRIGGER when: compose architecture; ui state design; compose архитектура; MVVM compose.
+description: Use proactively when building or refactoring Jetpack Compose / Compose Multiplatform UI, designing MVVM + UiState patterns, or decomposing large composables. Android 16 / SDK 36 / Material 3. Architecture and design phases — NOT implementation. TRIGGER: compose architecture; ui state design; compose архитектура; MVVM compose.
 model: opus
 effort: max
 tools: Read, Grep, Glob

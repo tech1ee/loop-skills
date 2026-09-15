@@ -1,6 +1,6 @@
 ---
 name: code-quality-reviewer
-description: Use proactively after spec-reviewer has passed. Reviews the diff for maintainability, clarity, dead code, naming, duplication, and idiomatic use of the project's primary language. Does NOT repeat spec-compliance or security checks. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use proactively after spec-reviewer has passed. Reviews the diff for maintainability, clarity, dead code, naming, duplication, and idiomatic use of the project's primary language. Does NOT repeat spec-compliance or security checks. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

@@ -1,6 +1,6 @@
 ---
 name: dry-duplication-auditor
-description: Use after multi-file changes or before merge to audit code duplication with Rule-of-Three gate (jscpd, PMD CPD). Distinguishes duplicate-of-2 (leave) vs duplicate-of-3 (extract). Single concern only. Read-only. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use after multi-file changes or before merge to audit code duplication with Rule-of-Three gate (jscpd, PMD CPD). Distinguishes duplicate-of-2 (leave) vs duplicate-of-3 (extract). Single concern only. Read-only. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

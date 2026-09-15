@@ -1,6 +1,6 @@
 ---
 name: android-fgs-compliance-auditor
-description: Use after foreground service changes or before Play submission to audit FGS type declarations, exemption-eligibility, Android 14/15 compliance, and Play Console use-case match. Single concern. Read-only. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин.
+description: Use after foreground service changes or before Play submission to audit FGS type declarations, exemption-eligibility, Android 14/15 compliance, and Play Console use-case match. Single concern. Read-only. TRIGGER: android audit; kotlin; compose; gradle; android; котлин.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

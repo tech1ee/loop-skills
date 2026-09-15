@@ -1,6 +1,6 @@
 ---
 name: comment-quality-auditor
-description: Use after code changes to audit comment hygiene — WHAT-vs-WHY violations, expired TODO/FIXME, outdated doc-comments, undocumented public API. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD. Use whenever the task fits. TRIGGER when: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD.
+description: Use after code changes to audit comment hygiene — WHAT-vs-WHY violations, expired TODO/FIXME, outdated doc-comments, undocumented public API. Single concern only. Read-only. TRIGGER: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

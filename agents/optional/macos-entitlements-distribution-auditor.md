@@ -1,6 +1,6 @@
 ---
 name: macos-entitlements-distribution-auditor
-description: Use before macOS code-signing or submission to audit entitlement / sandbox / Hardened-Runtime / distribution-channel consistency. Catches MAS-vs-Developer-ID mismatches Xcode does not lint. Single concern. Read-only. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit.
+description: Use before macOS code-signing or submission to audit entitlement / sandbox / Hardened-Runtime / distribution-channel consistency. Catches MAS-vs-Developer-ID mismatches Xcode does not lint. Single concern. Read-only. TRIGGER: macos audit; appkit; notarization; entitlements; macos.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

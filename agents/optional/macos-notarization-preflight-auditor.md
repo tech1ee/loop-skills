@@ -1,6 +1,6 @@
 ---
 name: macos-notarization-preflight-auditor
-description: Use before submitting a macOS Developer ID build to notarytool to audit Hardened Runtime, prohibited entitlements, stapling sequencing, and CI auth method safety. Single concern. Read-only. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit.
+description: Use before submitting a macOS Developer ID build to notarytool to audit Hardened Runtime, prohibited entitlements, stapling sequencing, and CI auth method safety. Single concern. Read-only. TRIGGER: macos audit; appkit; notarization; entitlements; macos.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

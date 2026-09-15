@@ -1,6 +1,6 @@
 ---
 name: kmp-swift-interop-readiness-auditor
-description: Use after KMP iOS-target changes to audit SKIE configuration, Swift Export readiness (Kotlin 2.2.20+), and Flow→Combine bridging completeness. Recommends SKIE / Swift Export / Obj-C interop. Single concern. Read-only. Use whenever the task fits. TRIGGER when: kmp; kotlin multiplatform; swift export; kmp; kotlin multiplatform; kmp interop. Use whenever the task fits. TRIGGER when: kmp; kotlin multiplatform; swift export; kmp; kotlin multiplatform; kmp interop.
+description: Use after KMP iOS-target changes to audit SKIE configuration, Swift Export readiness (Kotlin 2.2.20+), and Flow→Combine bridging completeness. Recommends SKIE / Swift Export / Obj-C interop. Single concern. Read-only. TRIGGER: kmp; kotlin multiplatform; swift export; kmp interop.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

@@ -1,6 +1,6 @@
 ---
 name: adr-completeness-auditor
-description: Use after ADR additions / status changes to audit MADR 4.0.0 schema completeness — required sections, status enum, stale-proposed >90d, dangling cross-refs. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: architecture decision; design choice; adr; tech decision; архитектурное решение; приму решение; выбери архитектуру; ADR. Use whenever the task fits. TRIGGER when: architecture decision; design choice; adr; tech decision; архитектурное решение; приму решение; выбери архитектуру; ADR.
+description: Use after ADR additions / status changes to audit MADR 4.0.0 schema completeness — required sections, status enum, stale-proposed >90d, dangling cross-refs. Single concern only. Read-only. TRIGGER: architecture decision; design choice; adr; tech decision; архитектурное решение; приму решение; выбери архитектуру; ADR.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

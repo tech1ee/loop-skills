@@ -1,6 +1,6 @@
 ---
 name: naming-conventions-auditor
-description: Use after type / function / variable additions to audit naming smells — generic suffixes (Manager/Helper/Util), id-length, Hungarian, acronym capitalization, boolean prefixes. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use after type / function / variable additions to audit naming smells — generic suffixes (Manager/Helper/Util), id-length, Hungarian, acronym capitalization, boolean prefixes. Single concern only. Read-only. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

@@ -1,6 +1,6 @@
 ---
 name: macos-appkit-swiftui-interop-auditor
-description: Use when introducing or reviewing NSViewRepresentable / NSHostingView seams on macOS to audit Coordinator, lifecycle, and gesture-recognizer compliance. Single concern. Read-only. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit. Use whenever the task fits. TRIGGER when: macos audit; appkit; notarization; entitlements; macos; notarization; entitlements; appkit.
+description: Use when introducing or reviewing NSViewRepresentable / NSHostingView seams on macOS to audit Coordinator, lifecycle, and gesture-recognizer compliance. Single concern. Read-only. TRIGGER: macos audit; appkit; notarization; entitlements; macos.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

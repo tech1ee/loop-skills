@@ -1,6 +1,6 @@
 ---
 name: android-baseline-profile-checklister
-description: Use before release to verify Baseline Profile setup completeness — module present, dep versions, CUJs defined, profile in APK. Single concern. Read-only. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин.
+description: Use before release to verify Baseline Profile setup completeness — module present, dep versions, CUJs defined, profile in APK. Single concern. Read-only. TRIGGER: android audit; kotlin; compose; gradle; android; котлин.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

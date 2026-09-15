@@ -1,6 +1,6 @@
 ---
 name: ios-coredata-migration-auditor
-description: Use after Core Data schema changes (new .xcdatamodel version) to audit lightweight-migration eligibility and heavyweight-migration policy declarations in an iOS or KMP iOS target. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode.
+description: Use after Core Data schema changes (new .xcdatamodel version) to audit lightweight-migration eligibility and heavyweight-migration policy declarations in an iOS or KMP iOS target. Single concern only. Read-only. TRIGGER: ios audit; swiftui; xcode; swift; ios.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

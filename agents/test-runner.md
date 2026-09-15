@@ -1,6 +1,6 @@
 ---
 name: test-runner
-description: Use when the orchestrator needs to run the project's test suite and only cares about pass/fail + failing test names. Detects gradle / xcodebuild / npm / pytest / swift test automatically. Foreground only — user sees every command. NOT background: tests execute arbitrary code in the repo and must stay in-the-loop. Use whenever the task fits. TRIGGER when: run tests; test suite; run unittest; прогони тесты; запусти тесты. Use whenever the task fits. TRIGGER when: run tests; test suite; run unittest; прогони тесты; запусти тесты.
+description: Use when the orchestrator needs to run the project's test suite and only cares about pass/fail + failing test names. Detects gradle / xcodebuild / npm / pytest / swift test automatically. Foreground only — user sees every command. NOT background: tests execute arbitrary code in the repo and must stay in-the-loop. TRIGGER: run tests; test suite; run unittest; прогони тесты; запусти тесты.
 model: haiku
 tools: Read, Bash, Grep
 disallowedTools: Edit, Write, WebFetch, WebSearch

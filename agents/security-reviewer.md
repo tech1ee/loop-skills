@@ -1,6 +1,6 @@
 ---
 name: security-reviewer
-description: Use proactively after any auth/payment/secret/data-handling code change. Reviews for auth bypass, injection, exposed secrets, insecure data handling. Returns findings with >80% confidence only — does not edit. Use whenever the task fits. TRIGGER when: security audit; vulnerability scan; auth review; secrets check; проверь безопасность; найди уязвимости; secure-аудит; проверь auth; проверь секреты. Use whenever the task fits. TRIGGER when: security audit; vulnerability scan; auth review; secrets check; проверь безопасность; найди уязвимости; secure-аудит; проверь auth; проверь секреты.
+description: Use proactively after any auth/payment/secret/data-handling code change. Reviews for auth bypass, injection, exposed secrets, insecure data handling. Returns findings with >80% confidence only — does not edit. TRIGGER: security audit; vulnerability scan; auth review; secrets check; проверь безопасность; найди уязвимости; secure-аудит; проверь auth; проверь секреты.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash

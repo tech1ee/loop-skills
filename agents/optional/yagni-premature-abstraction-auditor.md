@@ -1,6 +1,6 @@
 ---
 name: yagni-premature-abstraction-auditor
-description: Use after introducing interfaces / factories / extension points to audit speculative-generality smells (Fowler) — one-impl interfaces, single-product factories, dead extension points, generic types used at one call-site. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use after introducing interfaces / factories / extension points to audit speculative-generality smells (Fowler) — one-impl interfaces, single-product factories, dead extension points, generic types used at one call-site. Single concern only. Read-only. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

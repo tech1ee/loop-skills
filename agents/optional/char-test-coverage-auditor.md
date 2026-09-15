@@ -1,6 +1,6 @@
 ---
 name: char-test-coverage-auditor
-description: Use BEFORE refactoring HIGH-risk code to audit characterization-test coverage — line/branch coverage of touched lines, mutation score baseline, behavior-vs-signature assertions. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD. Use whenever the task fits. TRIGGER when: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD.
+description: Use BEFORE refactoring HIGH-risk code to audit characterization-test coverage — line/branch coverage of touched lines, mutation score baseline, behavior-vs-signature assertions. Single concern only. Read-only. TRIGGER: mutation test; characterization test; test coverage; tdd; мутационные тесты; покрой тестами; характеризационные тесты; TDD.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

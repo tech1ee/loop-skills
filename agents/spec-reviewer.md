@@ -1,6 +1,6 @@
 ---
 name: spec-reviewer
-description: Use proactively after any implementation step to verify the change matches the written spec/plan/task. Reads the task description, the diff, and the resulting files. Returns a binary verdict — SPEC-COMPLIANT or NOT — with precise reasons. Does not care about code quality. Use whenever the task fits. TRIGGER when: spec compliance; spec review; проверь соответствие спеке; spec-review. Use whenever the task fits. TRIGGER when: spec compliance; spec review; проверь соответствие спеке; spec-review.
+description: Use proactively after any implementation step to verify the change matches the written spec/plan/task. Reads the task description, the diff, and the resulting files. Returns a binary verdict — SPEC-COMPLIANT or NOT — with precise reasons. Does not care about code quality. TRIGGER: spec compliance; spec review; проверь соответствие спеке; spec-review.
 model: opus
 tools: Read, Grep, Glob, Bash
 disallowedTools: Edit, Write, WebFetch, WebSearch

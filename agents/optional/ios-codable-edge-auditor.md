@@ -1,6 +1,6 @@
 ---
 name: ios-codable-edge-auditor
-description: Use after Codable type changes to audit semantic edge cases — custom init(from:)/encode(to:), CodingKeys, key strategies, optional handling. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode.
+description: Use after Codable type changes to audit semantic edge cases — custom init(from:)/encode(to:), CodingKeys, key strategies, optional handling. Single concern only. Read-only. TRIGGER: ios audit; swiftui; xcode; swift; ios.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

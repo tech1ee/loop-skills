@@ -1,6 +1,6 @@
 ---
 name: android-coroutine-scope-leak-auditor
-description: Use after coroutine scope changes or before release to audit static patterns of coroutine-scope leaks — GlobalScope, singleton scopes, viewModelScope misuse in Fragments. Single concern. Read-only. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин.
+description: Use after coroutine scope changes or before release to audit static patterns of coroutine-scope leaks — GlobalScope, singleton scopes, viewModelScope misuse in Fragments. Single concern. Read-only. TRIGGER: android audit; kotlin; compose; gradle; android; котлин.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

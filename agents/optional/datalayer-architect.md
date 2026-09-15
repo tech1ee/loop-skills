@@ -1,6 +1,6 @@
 ---
 name: datalayer-architect
-description: Use proactively when building the KMP data layer (repositories, Ktor, Room, Koin, coroutine flows). Design phase only — architecture and patterns, not implementation. Android + iOS source sets. Use whenever the task fits. TRIGGER when: data layer; repository pattern; ktor room; дата-слой; репозиторий; ktor; room. Use whenever the task fits. TRIGGER when: data layer; repository pattern; ktor room; дата-слой; репозиторий; ktor; room.
+description: Use proactively when building the KMP data layer (repositories, Ktor, Room, Koin, coroutine flows). Design phase only — architecture and patterns, not implementation. Android + iOS source sets. TRIGGER: data layer; repository pattern; ktor room; дата-слой; репозиторий; ktor; room.
 model: opus
 effort: max
 tools: Read, Grep, Glob

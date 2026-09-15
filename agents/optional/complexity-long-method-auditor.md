@@ -1,6 +1,6 @@
 ---
 name: complexity-long-method-auditor
-description: Use after method changes or before merge to audit cyclomatic + cognitive complexity, LOC/method, nesting depth, parameter count. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use after method changes or before merge to audit cyclomatic + cognitive complexity, LOC/method, nesting depth, parameter count. Single concern only. Read-only. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

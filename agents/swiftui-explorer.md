@@ -1,6 +1,6 @@
 ---
 name: swiftui-explorer
-description: Use proactively for Phase 1 code research on SwiftUI / iOS codebases. Maps views, view-models, dependencies, navigation, and async flows. Read-only — returns file paths, line numbers, patterns. Prefer over generic research-agent when the repo is Swift/SwiftUI. Use whenever the task fits. TRIGGER when: explore codebase; find files; where is; trace flow; найди в коде; где находится; проследи поток. Use whenever the task fits. TRIGGER when: explore codebase; find files; where is; trace flow; найди в коде; где находится; проследи поток.
+description: Use proactively for Phase 1 code research on SwiftUI / iOS codebases. Maps views, view-models, dependencies, navigation, and async flows. Read-only — returns file paths, line numbers, patterns. Prefer over generic research-agent when the repo is Swift/SwiftUI. TRIGGER: explore codebase; find files; where is; trace flow; найди в коде; где находится; проследи поток.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

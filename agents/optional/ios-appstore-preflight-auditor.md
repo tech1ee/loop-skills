@@ -1,6 +1,6 @@
 ---
 name: ios-appstore-preflight-auditor
-description: Use before App Store submission to audit Required Reason API declarations, PrivacyInfo.xcprivacy field coverage, and entitlement-vs-privacy-string consistency. Single concern only. Read-only. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode. Use whenever the task fits. TRIGGER when: ios audit; swiftui; xcode; swift; ios; swiftui; swift; xcode.
+description: Use before App Store submission to audit Required Reason API declarations, PrivacyInfo.xcprivacy field coverage, and entitlement-vs-privacy-string consistency. Single concern only. Read-only. TRIGGER: ios audit; swiftui; xcode; swift; ios.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

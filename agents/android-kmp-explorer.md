@@ -1,6 +1,6 @@
 ---
 name: android-kmp-explorer
-description: Use proactively for Phase 1 code research on Android/Kotlin/KMP/Compose codebases. Maps modules, traces execution flows, finds similar features. Read-only — returns file paths, line numbers, patterns. Prefer this over generic research-agent when the repo is Kotlin/KMP. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин.
+description: Use proactively for Phase 1 code research on Android/Kotlin/KMP/Compose codebases. Maps modules, traces execution flows, finds similar features. Read-only — returns file paths, line numbers, patterns. Prefer this over generic research-agent when the repo is Kotlin/KMP. TRIGGER: android audit; kotlin; compose; gradle; android; котлин.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

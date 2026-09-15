@@ -1,6 +1,6 @@
 ---
 name: android-r8-proguard-auditor
-description: Use after AGP 9 upgrade or before release builds to audit R8 / ProGuard keep rules for AGP 9.0+ breaking changes, missing reflection keeps, and prohibited consumer-rule global options. Single concern. Read-only. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин. Use whenever the task fits. TRIGGER when: android audit; kotlin; compose; gradle; android; kotlin; compose; gradle; котлин.
+description: Use after AGP 9 upgrade or before release builds to audit R8 / ProGuard keep rules for AGP 9.0+ breaking changes, missing reflection keeps, and prohibited consumer-rule global options. Single concern. Read-only. TRIGGER: android audit; kotlin; compose; gradle; android; котлин.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

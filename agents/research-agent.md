@@ -1,6 +1,6 @@
 ---
 name: research-agent
-description: Use proactively before implementation for library docs, API references, and best-practice lookup. Uses context7 MCP first, then WebSearch/WebFetch. Returns a concise technical summary — does not write code or edit files. Use whenever the task fits. TRIGGER when: library docs; api reference; best practice lookup; документация; посмотри доки; найди в доках; API библиотеки. Use whenever the task fits. TRIGGER when: library docs; api reference; best practice lookup; документация; посмотри доки; найди в доках; API библиотеки.
+description: Use proactively before implementation for library docs, API references, and best-practice lookup. Uses context7 MCP first, then WebSearch/WebFetch. Returns a concise technical summary — does not write code or edit files. TRIGGER: library docs; api reference; best practice lookup; документация; посмотри доки; найди в доках; API библиотеки.
 model: sonnet
 tools: Read, Grep, Glob, WebSearch, WebFetch
 disallowedTools: Edit, Write, Bash

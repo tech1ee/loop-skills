@@ -1,6 +1,6 @@
 ---
 name: srp-godclass-auditor
-description: Use after non-trivial class additions or before merge to audit SRP violations and God-class smells with quantitative metrics (LCOM4, WMC+ATFD+TCC, LOC, field/method count). Single concern only. Read-only. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения. Use whenever the task fits. TRIGGER when: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
+description: Use after non-trivial class additions or before merge to audit SRP violations and God-class smells with quantitative metrics (LCOM4, WMC+ATFD+TCC, LOC, field/method count). Single concern only. Read-only. TRIGGER: code review; review the diff; pr review; quality review; проверь код; сделай ревью; ревью кода; review кода; просмотри изменения.
 model: opus
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

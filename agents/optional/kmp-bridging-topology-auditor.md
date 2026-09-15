@@ -1,6 +1,6 @@
 ---
 name: kmp-bridging-topology-auditor
-description: Use after Kotlin Multiplatform target / source-set changes to audit deprecated `ios()` shortcut, intermediate source-set topology, and `@OptionalExpectation` declarations. Single concern. Read-only. Use whenever the task fits. TRIGGER when: kmp; kotlin multiplatform; swift export; kmp; kotlin multiplatform; kmp interop. Use whenever the task fits. TRIGGER when: kmp; kotlin multiplatform; swift export; kmp; kotlin multiplatform; kmp interop.
+description: Use after Kotlin Multiplatform target / source-set changes to audit deprecated `ios()` shortcut, intermediate source-set topology, and `@OptionalExpectation` declarations. Single concern. Read-only. TRIGGER: kmp; kotlin multiplatform; swift export; kmp interop.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch
