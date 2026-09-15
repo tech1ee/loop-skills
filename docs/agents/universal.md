@@ -38,13 +38,6 @@ These 15 agents work with any codebase regardless of language or framework. Inst
 
 ---
 
-### `second-opinion`
-**Role:** Cross-model code review via OpenAI Codex. Advisory — never blocking. Requires `OPENAI_API_KEY`.
-**Model:** opus **When:** pre-ship gate, high-stakes diffs
-**Returns:** advisory findings with severity + consensus metadata
-**Install:** `npx loop-skills --agents second-opinion`
-
----
 
 ### `security-reviewer`
 **Role:** Auth bypass, injection, exposed secrets, insecure data handling. Reports findings with >80% confidence only.

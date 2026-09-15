@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.7.0 — 2026-09-15
+
+**Rewrite: one skill core, native distribution.**
+- `loop-plan`, `loop-debug`, `loop-audit` are now single platform-neutral skills under `skills/`, shared by Claude Code, Codex, and Pi. Phase instructions load lazily from `phases/*.md`; the router is under 6K tokens.
+- Convergence replaces phase counting: tier budgets (quick / standard / high-risk), evidence ledger, impact-closure checklist, "two rounds without a supported claim" stop rule, plan-review `current_high` contract with stall detection.
+- Execution runs one fresh worker per task with per-task checkpoints; re-invoking the same slug resumes from the first unfinished task.
+- Distribution is native: `.claude-plugin/` and `.agents/plugins/` marketplaces point at the repository root; install with `claude plugin marketplace add tech1ee/loop-skills` or `codex plugin marketplace add tech1ee/loop-skills`. Updates come from `claude plugin update` / Claude's startup check and `codex plugin marketplace upgrade`.
+- The Claude Code test-file lock hook now ships in the plugin (`hooks/test-lock.py`).
+- `npx loop-skills` is a platform picker that runs the native commands and offers to remove 0.6 copy-installs. `update`, `list`, `verify`, `uninstall`, `codex`, `init` subcommands are gone.
+- Removed: `skills/pi/`, `plugins/`, `commands/`, `templates/`, the Codex review wrappers (`run-codex-review.sh`, `codex-plan-review.sh`, `should-run-codex.py`, `second-opinion` agent) which depended on files outside the package, and all personal-vault and ADR-number requirements from skills and agents.
+- 30 stack-specific auditor agents moved to `agents/optional/`; the plugin auto-loads the 10 agents the loops dispatch.
+- Skill invocation on Claude Code is namespaced: `/loop-skills:loop-plan`.
+
+**Migration from 0.6:** run `npx loop-skills` (or delete `~/.claude/skills/loop-plan`, `~/.claude/skills/loop-debug` and the copied agents) so the old copies do not shadow the plugin; on Codex run `codex plugin remove loop-skills@personal` before adding the marketplace.
+
 ## v0.6.0 — 2026-07-16
 
 **Codex-native distribution:**

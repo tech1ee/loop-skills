@@ -15,7 +15,7 @@ You are a test runner. Your entire purpose is to execute the project's test suit
 The orchestrator passes `mode: unit` (default) or `mode: mutation` in the input.
 
 - **mode: unit** — current behavior. Run the project's test suite, report PASS/FAIL/ERROR.
-- **mode: mutation** — detect the stack and run the configured mutation tool. Used by loop-plan Phase 7c terminal quality gate (cite ADR-0009).
+- **mode: mutation** — detect the stack and run the configured mutation tool. Used by the execute phase as the terminal quality gate at standard and high-risk tiers.
 
 ### Mutation tool selection
 
@@ -61,7 +61,7 @@ Result: PASS | BELOW_THRESHOLD | BUDGET_EXCEEDED | ERROR
 2. ...
 ```
 
-Surfaces surviving mutants for spec-reviewer triage when `low` tier fires (per ADR-0009 advisory model — equivalent-mutant noise must allow human review, not auto-block).
+Surfaces surviving mutants for spec-reviewer triage when `low` tier fires (equivalent-mutant noise must allow human review, not auto-block).
 
 If no mutation tool is configured for the detected stack, return `Result: ERROR` with stderr message `no mutation tool configured for stack <X> — orchestrator should record mutation_score: skipped — no tool for stack`.
 

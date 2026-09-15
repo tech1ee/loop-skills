@@ -1,52 +1,28 @@
-/**
- * Installer behavior tests — rigor: tdd-only
- * Tests run against a temp ~/.claude mock directory, not the real one.
- *
- * Test behaviors (from plan T4):
- * 1. --dry-run prints file list to stdout and writes nothing to ~/.claude/
- * 2. Interactive multiselect shows all available skills with description
- * 3. Selecting loop-plan copies all files from skills/loop-plan/ to ~/.claude/skills/loop-plan/
- * 4. If ~/.claude/skills/loop-plan/ already exists, installer prompts confirm() before any write
- * 5. Install receipt is written with correct shape
- * 6. All 9 bin scripts land with execute permission (mode 0755) — both .py and .sh
- * 7. --force flag skips conflict confirmation and overwrites directly
- * 8. `claude-skills update` with stale receipt and registry returning higher version prompts user
- * 9. `claude-skills update` when installed version matches registry latest prints "up to date"
- * 10. Non-blocking check with NO_UPDATE_NOTIFIER=1 makes no registry fetch
- * 11. Non-blocking check with stale receipt + higher registry version prints update notice
- */
-
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, rm, mkdir, writeFile, readFile, stat } from 'node:fs/promises';
+import { mkdtemp, rm, mkdir, writeFile, access } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 
 const execFileP = promisify(execFile);
+const entryPoint = new URL('../src/install.js', import.meta.url).pathname;
 
 let tmpHome: string;
-let claudeDir: string;
 
 beforeEach(async () => {
-  tmpHome = await mkdtemp(join(tmpdir(), 'claude-skills-test-'));
-  claudeDir = join(tmpHome, '.claude');
-  await mkdir(join(claudeDir, 'skills'), { recursive: true });
-  await mkdir(join(claudeDir, 'agents'), { recursive: true });
-  await mkdir(join(claudeDir, 'bin'), { recursive: true });
+  tmpHome = await mkdtemp(join(tmpdir(), 'loop-skills-test-'));
 });
 
 afterEach(async () => {
   await rm(tmpHome, { recursive: true, force: true });
 });
 
-// Helper: run the installer with env HOME pointing to tmpHome
-async function runInstaller(args: string[], env: Record<string, string> = {}): Promise<{ stdout: string; stderr: string; code: number }> {
-  const entryPoint = new URL('../src/install.js', import.meta.url).pathname;
+async function run(args: string[], env: Record<string, string> = {}) {
   try {
     const result = await execFileP('node', [entryPoint, ...args], {
-      env: { ...process.env, HOME: tmpHome, ...env },
+      env: { ...process.env, HOME: tmpHome, PATH: join(tmpHome, 'bin') + ':' + process.env['PATH'], ...env },
       timeout: 10000,
     });
     return { stdout: result.stdout, stderr: result.stderr, code: 0 };
@@ -56,88 +32,100 @@ async function runInstaller(args: string[], env: Record<string, string> = {}): P
   }
 }
 
-describe('behavior 1 — dry-run writes nothing', () => {
-  test('--dry-run prints manifest and leaves ~/.claude/ empty', async () => {
-    const { stdout, code } = await runInstaller(['--dry-run', '--skills', 'loop-plan', '--no-agents', '--no-bin']);
+async function exists(path: string): Promise<boolean> {
+  try { await access(path); return true; } catch { return false; }
+}
+
+async function fakeCli(name: string, logFile: string): Promise<void> {
+  await mkdir(join(tmpHome, 'bin'), { recursive: true });
+  const script = `#!/bin/sh\necho "${name} $@" >> "${logFile}"\n`;
+  await writeFile(join(tmpHome, 'bin', name), script, { mode: 0o755 });
+}
+
+describe('dry-run', () => {
+  test('prints the native commands for every platform and writes nothing', async () => {
+    const { stdout, code } = await run(['--dry-run', '--all']);
     assert.equal(code, 0);
-    assert.match(stdout, /loop-plan/);
-    // skills dir must still be empty
-    const entries = await readFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md')).catch(() => null);
-    assert.equal(entries, null, 'SKILL.md must not be written in dry-run');
+    assert.match(stdout, /claude plugin marketplace add tech1ee\/loop-skills/);
+    assert.match(stdout, /claude plugin install loop-skills@loop-skills/);
+    assert.match(stdout, /codex plugin marketplace add tech1ee\/loop-skills/);
+    assert.match(stdout, /codex plugin add loop-skills@loop-skills/);
+    assert.match(stdout, /pi install npm:loop-skills/);
+    assert.equal(await exists(join(tmpHome, '.claude')), false);
   });
 });
 
-describe('behavior 3 — loop-plan install copies files', () => {
-  test('selecting loop-plan copies SKILL.md and references/', async () => {
-    const { code } = await runInstaller(['--skills', 'loop-plan', '--no-agents', '--no-bin', '--force']);
+describe('install', () => {
+  test('runs the marketplace and install commands in order per platform', async () => {
+    const log = join(tmpHome, 'calls.log');
+    await fakeCli('claude', log);
+    await fakeCli('codex', log);
+    await fakeCli('pi', log);
+    const { code, stdout } = await run(['--all', '--yes']);
     assert.equal(code, 0);
-    const skillMd = await readFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md'), 'utf8');
-    assert.match(skillMd, /loop-plan/i);
+    const calls = (await import('node:fs/promises')).readFile(log, 'utf8');
+    const lines = (await calls).trim().split('\n');
+    assert.deepEqual(lines, [
+      'claude plugin marketplace add tech1ee/loop-skills',
+      'claude plugin install loop-skills@loop-skills',
+      'codex plugin marketplace add tech1ee/loop-skills',
+      'codex plugin add loop-skills@loop-skills',
+      'pi install npm:loop-skills',
+    ]);
+    assert.match(stdout, /reload-plugins/);
+    assert.match(stdout, /marketplace upgrade loop-skills/);
   });
-});
 
-describe('behavior 4 — conflict prompts confirm()', () => {
-  test('existing skill dir without --force triggers confirm prompt', async () => {
-    // Pre-create the skill directory
-    await mkdir(join(claudeDir, 'skills', 'loop-plan'), { recursive: true });
-    await writeFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md'), 'old content');
-    // Without --force, installer should ask; since stdin is non-interactive it should cancel
-    const { code } = await runInstaller(['--skills', 'loop-plan', '--no-agents', '--no-bin']);
-    // Either exits 0 (user declined) or 1 (prompt cancelled)
-    const skillMd = await readFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md'), 'utf8');
-    assert.equal(skillMd, 'old content', 'file must not be overwritten without force');
-  });
-});
-
-describe('behavior 5 — install receipt written', () => {
-  test('receipt at ~/.claude/skills/.install-receipt.json has version + skills', async () => {
-    const { code } = await runInstaller(['--skills', 'loop-plan', '--no-agents', '--no-bin', '--force']);
+  test('a failing CLI prints the manual commands and continues with the next platform', async () => {
+    const log = join(tmpHome, 'calls.log');
+    await mkdir(join(tmpHome, 'bin'), { recursive: true });
+    await writeFile(join(tmpHome, 'bin', 'claude'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
+    await fakeCli('codex', log);
+    await fakeCli('pi', log);
+    const { stdout, code } = await run(['--all', '--yes']);
     assert.equal(code, 0);
-    const receiptRaw = await readFile(join(claudeDir, 'skills', '.install-receipt.json'), 'utf8');
-    const receipt = JSON.parse(receiptRaw);
-    assert.ok(typeof receipt.version === 'string', 'version must be a string');
-    assert.ok(Array.isArray(receipt.skills), 'skills must be an array');
-    assert.ok(receipt.skills.includes('loop-plan'), 'receipt must list loop-plan');
-    assert.ok(typeof receipt.installed_at === 'string', 'installed_at must be present');
+    assert.match(stdout, /Finish manually/);
+    const lines = (await (await import('node:fs/promises')).readFile(log, 'utf8')).trim().split('\n');
+    assert.equal(lines[0], 'codex plugin marketplace add tech1ee/loop-skills');
   });
 });
 
-describe('behavior 6 — bin scripts are executable', () => {
-  test('all .py and .sh files in bin/ have mode 0755', async () => {
-    const { code } = await runInstaller(['--skills', 'loop-plan', '--no-agents', '--force']);
+describe('--platforms', () => {
+  test('limits the run to the named platforms and rejects unknown names', async () => {
+    const log = join(tmpHome, 'calls.log');
+    await fakeCli('claude', log);
+    await fakeCli('codex', log);
+    const { code } = await run(['--platforms', 'codex', '--yes']);
     assert.equal(code, 0);
-    const binDir = join(claudeDir, 'bin');
-    const { readdir } = await import('node:fs/promises');
-    const files = await readdir(binDir);
-    const scripts = files.filter(f => f.endsWith('.py') || f.endsWith('.sh'));
-    assert.ok(scripts.length > 0, 'must have at least one bin script');
-    for (const script of scripts) {
-      const s = await stat(join(binDir, script));
-      const mode = s.mode & 0o777;
-      assert.equal(mode, 0o755, `${script} must have mode 0755, got ${mode.toString(8)}`);
-    }
+    const lines = (await (await import('node:fs/promises')).readFile(log, 'utf8')).trim().split('\n');
+    assert.deepEqual(lines, ['codex plugin marketplace add tech1ee/loop-skills', 'codex plugin add loop-skills@loop-skills']);
+    const bad = await run(['--platforms', 'cursor', '--yes']);
+    assert.equal(bad.code, 1);
+    assert.match(bad.stderr, /Unknown platform/);
   });
 });
 
-describe('behavior 7 — --force skips confirm', () => {
-  test('--force overwrites existing skill without prompting', async () => {
-    await mkdir(join(claudeDir, 'skills', 'loop-plan'), { recursive: true });
-    await writeFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md'), 'old content');
-    const { code } = await runInstaller(['--skills', 'loop-plan', '--no-agents', '--no-bin', '--force']);
+describe('legacy copy-install', () => {
+  test('is detected from the 0.6 receipt and removed with --yes', async () => {
+    const skills = join(tmpHome, '.claude', 'skills');
+    const agents = join(tmpHome, '.claude', 'agents');
+    await mkdir(join(skills, 'loop-plan'), { recursive: true });
+    await mkdir(agents, { recursive: true });
+    await writeFile(join(skills, 'loop-plan', 'SKILL.md'), 'old');
+    await writeFile(join(agents, 'spec-reviewer.md'), 'old');
+    await writeFile(join(skills, '.install-receipt.json'), JSON.stringify({ version: '0.6.0', skills: ['loop-plan'], agents: ['spec-reviewer'] }));
+    const { stdout, code } = await run(['--dry-run', '--all']);
     assert.equal(code, 0);
-    const skillMd = await readFile(join(claudeDir, 'skills', 'loop-plan', 'SKILL.md'), 'utf8');
-    assert.notEqual(skillMd, 'old content', 'file must be overwritten with --force');
-  });
-});
+    assert.match(stdout, /Legacy copy-install found \(v0\.6\.0\)/);
+    assert.equal(await exists(join(skills, 'loop-plan')), true);
 
-describe('behavior 10 — NO_UPDATE_NOTIFIER suppresses fetch', () => {
-  test('no registry fetch when NO_UPDATE_NOTIFIER=1', async () => {
-    // Intercept fetch by setting an env that blocks network (test with no real network effect)
-    const { stdout } = await runInstaller(
-      ['list'],
-      { NO_UPDATE_NOTIFIER: '1' }
-    );
-    // Test is behavioral: if no "Update available" text in output, fetch was suppressed
-    assert.doesNotMatch(stdout, /Update available/);
+    await fakeCli('claude', join(tmpHome, 'calls.log'));
+    await fakeCli('codex', join(tmpHome, 'calls.log'));
+    await fakeCli('pi', join(tmpHome, 'calls.log'));
+    const second = await run(['--all', '--yes']);
+    assert.equal(second.code, 0);
+    assert.equal(await exists(join(skills, 'loop-plan')), false);
+    assert.equal(await exists(join(agents, 'spec-reviewer.md')), false);
+    assert.equal(await exists(join(skills, '.install-receipt.json')), false);
   });
 });

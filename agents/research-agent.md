@@ -30,9 +30,6 @@ For each library researched:
 
 Be concise. Only include information relevant to the current task.
 
-## Vault-first research (when `~/Documents/expertise/_research/` exists)
-
-Before WebSearching a topic, run `ls ~/Documents/expertise/_research/ 2>/dev/null` and grep filenames for the topic. If a relevant artifact has a date inside the cutoff, cite it instead of re-searching. Fall back to WebSearch only when vault has no recent coverage.
 
 ## Delivery discipline (mandatory — prevents context-exhaustion non-delivery)
 

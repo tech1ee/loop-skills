@@ -1,0 +1,29 @@
+{
+  "name": "loop-skills",
+  "version": "0.7.0",
+  "description": "Research-driven planning and debugging loops: explore to closure, ask only what code cannot answer, plan with tests, execute in fresh contexts, verify the goal.",
+  "author": {
+    "name": "Arman Aralbayev",
+    "url": "https://github.com/tech1ee"
+  },
+  "homepage": "https://github.com/tech1ee/loop-skills",
+  "repository": "https://github.com/tech1ee/loop-skills",
+  "license": "MIT",
+  "keywords": ["codex", "planning", "debugging", "tdd", "spec-driven"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Loop Skills",
+    "shortDescription": "Research, plan, debug, and verify with Codex",
+    "longDescription": "Engineering loops that explore the repository to closure, ask only irreducible questions, research when it changes the design, plan with independent tests, execute in fresh contexts, and verify the goal rather than task completion.",
+    "developerName": "Arman Aralbayev",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write", "Interactive"],
+    "websiteURL": "https://github.com/tech1ee/loop-skills",
+    "defaultPrompt": [
+      "Use loop-plan to research and plan this feature.",
+      "Use loop-debug to reproduce and fix this bug.",
+      "Use loop-audit to inspect this agent workflow."
+    ],
+    "brandColor": "#10A37F"
+  }
+}

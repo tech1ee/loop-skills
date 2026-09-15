@@ -1,4 +1,6 @@
 # Supporting Agents
+> **0.7.0:** the plugin auto-loads the 10 universal and explorer agents. Stack-specific auditors live in `agents/optional/`; copy any you want into `~/.claude/agents/` or your project's `.claude/agents/`.
+
 
 Loop skills come with an optional set of agents that the orchestration pipeline uses at runtime. These are separate from the skills themselves — you can install all of them, some, or none.
 
@@ -7,10 +9,9 @@ Loop skills come with an optional set of agents that the orchestration pipeline 
 In Claude Code, agents are Markdown files in `~/.claude/agents/`. When loop-plan dispatches a task to an agent, Claude Code loads the agent's Markdown as a system prompt and runs it with its own context and tool access.
 
 Loop-plan uses agents in several places:
-- **Phase 1** — read-only explorer agents map the codebase in parallel
-- **Phase 3** — research-agent runs 5-step methodology research per domain
-- **Phase 6** — second-opinion cross-model review (loop-plan + loop-debug)
-- **Phase 7** — implementation pipeline: test-writer authors tests → spec-reviewer and code-quality-reviewer gate each task → loop-verifier verifies goal achievement at stage boundaries
+- **the explore phase** — read-only explorer agents map the codebase in parallel
+- **the research phase** — research-agent runs 5-step methodology research per domain
+- **the execute phase** — implementation pipeline: test-writer authors tests → spec-reviewer and code-quality-reviewer gate each task → loop-verifier verifies goal achievement at stage boundaries
 - **On-demand** — auditor agents triggered by specific code changes (Android audit, iOS preflight, quality detectors, etc.)
 
 Agents are organized into 8 groups in the installer. Install the groups that match your stack.
@@ -25,7 +26,7 @@ Agents are organized into 8 groups in the installer. Install the groups that mat
 
 **Role:** Goal-backward, adversarial achievement verifier. Verifies that a stage (or the whole plan) *achieved its goal*, not merely that its tasks were marked done.
 
-**Used in:** Every stage boundary in loop-plan (Phase 7b); terminal acceptance in loop-debug (Phase 6). `completion_state = "shipped"` is blocked until this agent returns `passed`.
+**Used in:** Every stage boundary in loop-plan (the execute phase); terminal acceptance in loop-debug (Phase 6). `completion_state = "shipped"` is blocked until this agent returns `passed`.
 
 **Returns:** Tri-state verdict — `passed | gaps_found | human_needed` — plus a scored artifact-check table and probe results.
 
@@ -51,7 +52,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 
 **Role:** Separate TDD test author. Exists so that the agent which writes the tests is never the agent which makes them pass — the single most effective anti-cheating control in AI-assisted TDD.
 
-**Used in:** Phase 7b (loop-plan) — dispatched before the implementer. Returns file paths for hash-locking. The implementer that runs next cannot modify the locked test files.
+**Used in:** the execute phase (loop-plan) — dispatched before the implementer. Returns file paths for hash-locking. The implementer that runs next cannot modify the locked test files.
 
 **Returns:** Test file paths, test method names, RED proof (runner output showing new tests FAIL for the right reason), and confirmation that no source/production file was touched.
 
@@ -75,7 +76,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 
 **Role:** Verifies that an implementation matches the plan spec.
 
-**Used in:** Phase 7 — runs after each implementer task completes.
+**Used in:** the execute phase — runs after each implementer task completes.
 
 **Returns:** `SPEC-COMPLIANT` or `NOT-SPEC-COMPLIANT: <reasons>` with specific line references.
 
@@ -94,7 +95,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 
 **Role:** 11-dimension code quality check.
 
-**Used in:** Phase 7 — runs after spec-reviewer passes.
+**Used in:** the execute phase — runs after spec-reviewer passes.
 
 **Returns:** `QUALITY-PASS` or `NEEDS-REWORK: <findings>` with dimension labels.
 
@@ -112,7 +113,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 11. Mutability — minimal shared mutable state
 
 > [!NOTE]
-> At `rigor: minimal`, code-quality-reviewer is skipped. At `rigor: tdd-only`, it runs but dimensions 1–5 are advisory (not blocking). At `rigor: full`, all 11 dimensions are gating.
+> At `rigor: minimal`, code-quality-reviewer is skipped. At `rigor: standard tier`, it runs but dimensions 1–5 are advisory (not blocking). At `rigor: full`, all 11 dimensions are gating.
 
 ---
 
@@ -120,7 +121,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 
 **Role:** 5-step methodology research with date verification and cross-validation.
 
-**Used in:** Phase 3 — dispatched for each research domain in parallel.
+**Used in:** the research phase — dispatched for each research domain in parallel.
 
 **Returns:** Structured findings with source URLs, dates, and confidence scores (HIGH/MED/LOW).
 
@@ -140,7 +141,7 @@ The `must_haves` contract (truths, artifacts, key_links) is derived from your go
 
 **Role:** Runs the project's test suite and reports pass/fail with failing test names.
 
-**Used in:** Phase 7 — runs between implementer and spec-reviewer.
+**Used in:** the execute phase — runs between implementer and spec-reviewer.
 
 **Returns:** `PASS: N/N` or `FAIL: N/M — [list of failing tests]`
 
@@ -150,22 +151,6 @@ For mutation testing (Standard/Hardened intensity in loop-debug), test-runner al
 
 ---
 
-### `second-opinion`
-
-**Role:** Cross-model review via OpenAI Codex.
-
-**Used in:** Phase 6 (loop-plan) and Phase 6 (loop-debug Standard/Hardened).
-
-**Requires:** `OPENAI_API_KEY` in your shell environment.
-
-**Returns:** Findings labeled with severity (HIGH/MEDIUM/LOW) and a `Claude AGREES/DISAGREES` meta-tag.
-
-> [!IMPORTANT]
-> second-opinion findings are **advisory** — they never block execution. The value is the cases where Codex flags something Claude missed. If both models agree on everything, the second opinion is low-signal for that review. Disagreement is the useful data point.
-
-If `OPENAI_API_KEY` is not set, second-opinion returns `REVIEW UNAVAILABLE` and the pipeline continues.
-
----
 
 ### `security-reviewer`
 
@@ -286,7 +271,7 @@ If `OPENAI_API_KEY` is not set, second-opinion returns `REVIEW UNAVAILABLE` and 
 
 **Role:** Android/Kotlin/KMP/Compose codebase exploration.
 
-**Used in:** Phase 1 — dispatched when the codebase is detected as Android/Kotlin/KMP.
+**Used in:** the explore phase — dispatched when the codebase is detected as Android/Kotlin/KMP.
 
 **Returns:** File paths, line numbers, execution-flow traces, conventions, refactoring candidates, and deepening opportunities.
 
@@ -340,7 +325,7 @@ If `OPENAI_API_KEY` is not set, second-opinion returns `REVIEW UNAVAILABLE` and 
 
 **Role:** iOS/SwiftUI codebase exploration.
 
-**Used in:** Phase 1 — dispatched when the codebase is detected as iOS/Swift.
+**Used in:** the explore phase — dispatched when the codebase is detected as iOS/Swift.
 
 **Returns:** File paths, line numbers, view/view-model structure, navigation flows, async patterns, and dependency wiring.
 
@@ -456,7 +441,7 @@ If `OPENAI_API_KEY` is not set, second-opinion returns `REVIEW UNAVAILABLE` and 
 
 **Role:** React/Next.js/TypeScript codebase exploration.
 
-**Used in:** Phase 1 — dispatched when the codebase is detected as React/Next.js.
+**Used in:** the explore phase — dispatched when the codebase is detected as React/Next.js.
 
 **Returns:** File paths, component tree, hook dependencies, data-fetch patterns, routing structure, conventions.
 
@@ -553,14 +538,14 @@ If `OPENAI_API_KEY` is not set, second-opinion returns `REVIEW UNAVAILABLE` and 
 The interactive installer lets you pick by group. To install specific agents non-interactively, use `--agents`:
 
 ```bash
-# Install loop-plan + only the Phase 7 review gates
+# Install loop-plan + only the the execute phase review gates
 claude-skills --skills loop-plan --agents spec-reviewer,code-quality-reviewer,test-runner --no-bin
 
-# Android project: Phase 1 explorer + Android audit agents
+# Android project: the explore phase explorer + Android audit agents
 claude-skills --skills loop-plan,loop-debug \
   --agents android-kmp-explorer,android-coroutine-scope-leak-auditor,android-fgs-compliance-auditor,android-r8-proguard-auditor
 
-# iOS project: Phase 1 explorer + iOS/macOS auditors
+# iOS project: the explore phase explorer + iOS/macOS auditors
 claude-skills --skills loop-plan,loop-debug \
   --agents swiftui-explorer,ios-appstore-preflight-auditor,kmp-swift-interop-readiness-auditor
 
@@ -578,4 +563,4 @@ These agents are part of Claude Code's built-in catalog and don't need to be ins
 - `Explore` — generic read-only codebase explorer (used for non-Android/iOS/React stacks)
 - `Plan` — used for architecture design phases
 
-If you're on Android, iOS, or React/Next.js, install the matching stack explorer for better Phase 1 results than the generic `Explore` agent.
+If you're on Android, iOS, or React/Next.js, install the matching stack explorer for better the explore phase results than the generic `Explore` agent.

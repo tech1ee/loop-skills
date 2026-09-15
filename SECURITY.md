@@ -1,43 +1,21 @@
-# Security Policy
+# Security
 
-## What the installer does
+## What installation does
 
-- Copies skill and agent Markdown files from this package into `~/.claude/skills/` and `~/.claude/agents/`.
-- Copies bin scripts into `~/.claude/bin/` and sets them executable (`chmod 0755`).
-- Writes an install receipt to `~/.claude/skills/.install-receipt.json`.
-- Performs a non-blocking version check via `fetch()` to the npm registry. This is fire-and-forget and never blocks the install.
+Loop Skills is installed by your agent's plugin manager (`claude plugin`, `codex plugin`, `pi install`). The repository is the plugin: the manager clones or copies it and reads the manifests. Nothing in this package runs on `npm install`; there is no `postinstall`.
 
-## What the installer does NOT do
+`npx loop-skills` only runs those plugin-manager commands and, with your confirmation, deletes the copied files left by releases up to 0.6 (`~/.claude/skills/loop-plan`, `~/.claude/skills/loop-debug`, the copied agents, and the receipt file). It writes nothing else.
 
-- No `postinstall` script — nothing runs automatically on `npm install`.
-- No network requests during skill file copying.
-- No telemetry, analytics, or usage tracking of any kind.
-- No writes outside `~/.claude/` (the install target directory is always confirmed before first write).
-- No root / sudo privileges requested or required.
+## What runs at session time
+
+- `hooks/test-lock.py` (Claude Code only) runs before `Edit`/`Write`. It reads `~/.claude/projects/*/tdd-snapshots/_active_task_files.txt`, compares paths, and exits 2 to block an edit to a locked test file. It never writes and never reaches the network.
+- Scripts in `bin/` run only when a skill asks for them and only against the repository you are working in. None of them contact the network except `verify-internet-research.py`, which fetches the URLs a research report cites in order to check them.
+- The Pi extensions read Pi session state and write loop state files under `.pi/plans/`.
 
 ## Verifying a release
 
-Every release attaches a `checksums.txt` to the GitHub release assets. Verify after install:
+Each GitHub release attaches `checksums.txt` (SHA-256 of every shipped file). Compare against the installed plugin root reported by `claude plugin list` or `codex plugin list`.
 
-```bash
-# Download checksums.txt from the release, then:
-sha256sum -c checksums.txt
-```
+## Reporting
 
-npm provenance records are attached to each published version (viewable on npmjs.com under the version's "Provenance" tab).
-
-## Planned: Minisign signatures (v0.2.0)
-
-Release binaries will be signed with [minisign](https://jedisct1.github.io/minisign/) starting in v0.2.0. The public key will be pinned in this file once established.
-
-## Reporting a vulnerability
-
-Open a [GitHub Security Advisory](../../security/advisories/new) (private disclosure). We aim to respond within 72 hours.
-
-For lower-severity issues (false positives in CI scripts, documentation errors), a regular GitHub issue is fine.
-
-## Scope
-
-The CI scripts (`ci/check-unicode.py`, `ci/check-skill-safety.py`, `ci/generate-checksums.py`) are in scope. They run on skill content before it ships — bypassing them would allow malicious skills to reach users.
-
-Out of scope: the npm registry infrastructure itself, GitHub Actions infrastructure, issues in third-party dependencies (report those upstream).
+Open a private security advisory on the GitHub repository. In scope: skill text that could instruct an agent to perform unsafe actions, hook or script behavior, CI gates (`ci/check-unicode.py`, `ci/check-skill-safety.py`, `ci/generate-checksums.py`, `ci/version-sync.py`).

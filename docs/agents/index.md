@@ -8,7 +8,6 @@
 | code-quality-reviewer | Universal | opus | 11-dimension quality sweep | after spec-reviewer |
 | research-agent | Universal | sonnet | library docs + best practices | Phase 3 internet research |
 | test-runner | Universal | haiku | test suite execution + mutation | after implementer |
-| second-opinion | Universal | opus | cross-model Codex review | pre-ship gate |
 | security-reviewer | Universal | opus | auth / injection / secrets | after security-sensitive edits |
 | srp-godclass-auditor | Universal | opus | God-class + LCOM4 | before merge |
 | dry-duplication-auditor | Universal | opus | Rule-of-Three duplication | before merge |

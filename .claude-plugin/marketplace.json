@@ -1,0 +1,17 @@
+{
+  "name": "loop-skills",
+  "description": "Loop Skills marketplace: loop-plan, loop-debug, loop-audit",
+  "owner": {
+    "name": "Arman Aralbayev",
+    "url": "https://github.com/tech1ee"
+  },
+  "plugins": [
+    {
+      "name": "loop-skills",
+      "description": "Research-driven planning and debugging loops for Claude Code",
+      "version": "0.7.0",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

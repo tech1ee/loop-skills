@@ -1,0 +1,13 @@
+{
+  "name": "loop-skills",
+  "version": "0.7.0",
+  "description": "Research-driven planning and debugging loops: explore to closure, ask only what code cannot answer, plan with tests, execute in fresh contexts, verify the goal.",
+  "author": {
+    "name": "Arman Aralbayev",
+    "url": "https://github.com/tech1ee"
+  },
+  "homepage": "https://github.com/tech1ee/loop-skills",
+  "repository": "https://github.com/tech1ee/loop-skills",
+  "license": "MIT",
+  "keywords": ["planning", "debugging", "tdd", "spec-driven", "workflow"]
+}

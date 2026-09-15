@@ -1,86 +1,25 @@
-# How Loop Skills Work
+# How it works
 
-## loop-plan phases
+## One core, three hosts
 
-```
-Phase 0  Seed           Derive slug, check for resume, load context, create plan file
-Phase 1  Exploration    Parallel read-only subagents map codebase (similar features / arch / tests)
-Phase 2  Clarify gate   AskUserQuestion — decisions the user must make before research
-Phase 3  Research       Date-strict internet research (context7 + WebSearch)
-Phase 3b Tool inventory Scan installed agents/skills to inform orchestration design
-Phase 4  Plan           Write tasks with test specs, architecture decisions, orchestration design
-Phase 5  Loop gate      AskUserQuestion — ship it / more research / more questions / more exploration
-Phase 6  Drift check    Verify plan against requirements, research, constraints
-Phase 7a ExitPlanMode   Summary + hand-off to subagent-driven execution
-Phase 7b Execution      Subagents implement tasks with spec-reviewer + code-quality-reviewer gates
-```
+`skills/` holds one copy of each skill. Claude Code loads it through `.claude-plugin/plugin.json`, Codex through `.codex-plugin/plugin.json`, Pi through the `pi.skills` field in `package.json`. The skill text uses generic actions (ask, delegate, plan dir, helper path) that `skills/loop-plan/references/platforms.md` maps to each host once per session.
 
-**Exit signal:** say "ship it" (or equivalent: "go", "let's build", "поехали") at the Phase 5 gate.
+Each `SKILL.md` is a router: contract, state, tier table, phase list, convergence rule. Phase instructions live in `phases/*.md` and are read when the phase starts. Claude Code's plugin inspector reports the always-on cost at about 1.7K tokens for the whole plugin.
 
-## loop-debug phases
+## Marketplaces in the repository
 
-```
-Phase 0  Reproduce      Extract bug_signature; write T0a regression test (must fail RED)
-Phase 1  Investigate    Parallel explorers: root-cause + scope + existing-coverage
-Phase 2  Clarify        AskUserQuestion: scope / severity / fix-shape / acceptance
-Phase 3  Research       Date-strict fix patterns + prevention strategies for this bug class
-Phase 4  Plan           Emit T0a regression + T-fix minimal + T0b prevention-design
-Phase 5  Loop gate      Intensity selection (minimal / standard / hardened) + ship/loop/back
-Phase 6  Drift + Exec   Drift rules 1-17; ExitPlanMode; RED→impl→GREEN→verify→mutation
-```
+`.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json` both list one plugin whose source is the repository root. Adding `tech1ee/loop-skills` as a marketplace on either CLI makes the repository the source of truth; a release is a version bump plus a git tag. `ci/version-sync.py` keeps `VERSION`, `package.json`, both plugin manifests, and the Claude marketplace entry equal.
 
-**Key guarantee:** T0a (the regression test) is written before any investigation. It must be RED before the fix, GREEN after. Post-fix mutation score must be ≥ pre-fix baseline.
+Update detection is the host's job: Claude Code polls marketplaces after session start and asks for `/reload-plugins`; Codex refreshes git marketplaces on `codex plugin marketplace upgrade`; Pi on `pi update --extensions`.
 
-## File layout after install
+## State and resume
 
-```
-~/.claude/
-  skills/
-    loop-plan/
-      SKILL.md              main skill (loaded by Claude Code when you type /loop-plan)
-      references/           11+ supporting reference files (orchestration, TDD workflow, etc.)
-    loop-debug/
-      SKILL.md
-      references/           4 reference files (+ inherits loop-plan/references/)
-    .install-receipt.json   version, installed_at, skills list, file checksums
-  agents/
-    spec-reviewer.md        (optional — if selected during install)
-    code-quality-reviewer.md
-    research-agent.md
-    test-runner.md
-    second-opinion.md
-    android-kmp-explorer.md
-    swiftui-explorer.md
-  bin/
-    new-adr.py              ADR management
-    test-integrity.py       Test snapshot + tamper detection
-    verify-code-research.py Citation verifier (hallucination guard)
-    scan-tooling-parse.py   Tool inventory parser
-    should-run-codex.py     Cost gate for cross-model review
-    run-codex-review.sh     Codex review runner
-    codex-plan-review.sh    Plan-stage Codex reviewer
-  commands/
-    scan-tooling.md         /scan-tooling slash command
-  plans/                    Created by loop-plan at runtime (per-task)
-```
+Every loop keeps `<slug>.md` (the human plan, accumulated by iteration) and `<slug>.state.json` (schema in `skills/loop-plan/references/state.md`) in the host's plan directory. The state carries tier and budget, an evidence ledger, the impact-closure checklist, must-haves, per-task status with checkpoints, review counters, and stopping reasons. Re-invoking the skill with the same slug continues from the recorded phase; execution continues from the first task not marked done. Version 1 state files from releases up to 0.6 are read with a field mapping.
 
-## Pi package surface
+## Execution model
 
-`package.json` declares a Pi manifest with `skills: ["./skills/pi"]`. Pi therefore loads only the platform-safe skills under `skills/pi/`; it does not load the Claude Code installer payload or the Claude-only reference workflow. The Pi skills use the native `subagent` tool and project-local `.pi/plans/` artifacts. The bundled loop extensions expose `loop_progress`, `loop_inventory`, and `loop_evidence` tools. The model/subscription limits panel is installed separately in the local Pi setup, not bundled with loop-skills. They render a persistent checkpoint widget above the editor, snapshot available agents/skills/extensions/packages/tools/models/MCP configuration, and maintain source-backed evidence in the plan state; `/loop-progress clear` removes the widget. Install locally with `pi install /absolute/path/to/loop-skills`, or install the published npm package.
+The controller never implements. One fresh worker per task receives the task block by value. Reviewers run in fresh read-only contexts. At standard tier a separate test author writes and locks the tests before the worker starts; on Claude Code `hooks/test-lock.py` blocks edits to locked files, on other hosts `bin/test-integrity.py verify` detects tampering afterwards. Mutation testing compares post-change to pre-change; cross-vendor review is advisory and only at high-risk tier.
 
-### Adaptive loop efficiency
+## Pi extensions
 
-Both Pi loops use a budgeted funnel rather than fixed maximal fan-out: triage → capability inventory → evidence ledger → highest-information probe → reconciliation → stop or escalate. Quick tasks use one scout, standard tasks use 1–2 investigators, and high-risk tasks may use 3–5. They stop when high-impact unknowns are closed, two rounds add no material evidence, or the budget is exhausted. Remaining uncertainty is reported instead of hidden.
-
-The Claude Code installer and its `~/.claude/` layout remain unchanged for backward compatibility.
-
-## Update mechanism
-
-The installer performs a **non-blocking background check** on every run (unless `NO_UPDATE_NOTIFIER=1` or `CI=1`):
-
-1. On startup, reads a 24-hour TTL cache at `~/.claude/skills/.update-check.json`.
-2. If the cache is stale (or missing), fires a `fetch()` to the npm registry dist-tags endpoint.
-3. If a newer version exists, prints a one-line notice after the install completes.
-4. The fetch is fire-and-forget — it never blocks or fails the install.
-
-To explicitly update: `loop-skills update` runs `npm install -g loop-skills@latest`.
+`extensions/` ships `loop_progress` (checkpoint widget), `loop_inventory` (capability snapshot), `loop_evidence` (ledger writes), and `loop_context` (usage sampling, compaction-safe checkpoints, exactly-once continuation). They are optional; the skills work without them.

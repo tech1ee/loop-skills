@@ -1,8 +1,9 @@
 node_modules/
 dist/
 *.js.map
-install.mjs
 __pycache__/
 *.pyc
 .DS_Store
 *.tgz
+.pi/
+.pi-subagents/

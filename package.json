@@ -1,11 +1,10 @@
 {
   "name": "loop-skills",
-  "version": "0.6.0",
-  "description": "Research-driven planning, debugging, and audit skills for Codex, Pi, and Claude Code",
+  "version": "0.7.0",
+  "description": "Research-driven planning and debugging loops for Claude Code, Codex, and Pi",
   "type": "module",
   "bin": {
-    "loop-skills": "dist/src/install.js",
-    "claude-skills": "dist/src/install.js"
+    "loop-skills": "dist/src/install.js"
   },
   "engines": {
     "node": ">=18"
@@ -21,9 +20,11 @@
     "skills/",
     "agents/",
     "bin/",
-    "commands/",
-    "templates/",
-    "plugins/",
+    "hooks/",
+    ".claude-plugin/",
+    ".codex-plugin/",
+    ".agents/",
+    "VERSION",
     "checksums.txt"
   ],
   "dependencies": {
@@ -35,9 +36,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && python3 ci/version-sync.py --check",
     "check:extensions": "tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --skipLibCheck extensions/*.ts",
-    "test": "node --test dist/test/installer.test.js dist/test/pi-package.test.js dist/test/context-state.test.js dist/test/codex-plugin.test.js && npm run check:extensions",
+    "check:size": "python3 ci/check-skill-size.py",
+    "version:sync": "python3 ci/version-sync.py --write",
+    "test": "node --test dist/test/installer.test.js dist/test/plugin-manifests.test.js dist/test/hook-test-lock.test.js dist/test/pi-package.test.js dist/test/context-state.test.js && npm run check:extensions && npm run check:size && python3 ci/version-sync.py --check",
     "test:e2e": "bash test/e2e-published.sh"
   },
   "repository": {
@@ -47,6 +50,7 @@
   "keywords": [
     "claude",
     "claude-code",
+    "claude-code-plugin",
     "codex",
     "codex-plugin",
     "pi-package",
@@ -59,7 +63,7 @@
   ],
   "pi": {
     "skills": [
-      "./skills/pi"
+      "./skills"
     ],
     "extensions": [
       "./extensions/loop-progress.ts",

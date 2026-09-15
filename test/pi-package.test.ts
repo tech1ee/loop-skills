@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-test('package declares Pi skills', async () => {
+test('package declares the shared skills for Pi', async () => {
   const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')) as {
     name?: string;
     bin?: Record<string, string>;
@@ -15,12 +15,11 @@ test('package declares Pi skills', async () => {
   };
   assert.equal(pkg.name, 'loop-skills');
   assert.equal(pkg.bin?.['loop-skills'], 'dist/src/install.js');
-  assert.equal(pkg.bin?.['claude-skills'], 'dist/src/install.js');
   assert.ok(pkg.keywords?.includes('pi-package'));
-  assert.deepEqual(pkg.pi?.skills, ['./skills/pi']);
+  assert.deepEqual(pkg.pi?.skills, ['./skills']);
 });
 
-test('Pi manifest exposes the progress extension', async () => {
+test('Pi manifest exposes the loop extensions', async () => {
   const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')) as {
     pi?: { extensions?: string[] };
   };
@@ -30,22 +29,21 @@ test('Pi manifest exposes the progress extension', async () => {
     './extensions/loop-evidence.ts',
     './extensions/loop-context.ts',
   ]);
-  const progress = await readFile(join(root, 'extensions', 'loop-progress.ts'), 'utf8');
-  const inventory = await readFile(join(root, 'extensions', 'loop-inventory.ts'), 'utf8');
-  const evidence = await readFile(join(root, 'extensions', 'loop-evidence.ts'), 'utf8');
-  const context = await readFile(join(root, 'extensions', 'loop-context.ts'), 'utf8');
-  assert.match(progress, /registerTool\(\{\s*name: "loop_progress"/s);
-  assert.match(progress, /setWidget\("loop-progress"/);
-  assert.match(inventory, /name: "loop_inventory"/);
-  assert.match(evidence, /name: "loop_evidence"/);
-  assert.match(context, /name: "loop_context"/);
+  for (const [file, tool] of [
+    ['loop-progress.ts', 'loop_progress'],
+    ['loop-inventory.ts', 'loop_inventory'],
+    ['loop-evidence.ts', 'loop_evidence'],
+    ['loop-context.ts', 'loop_context'],
+  ]) {
+    const text = await readFile(join(root, 'extensions', file), 'utf8');
+    assert.match(text, new RegExp(`name: "${tool}"`));
+  }
 });
 
-test('Pi skills are discoverable and do not require Claude-only tools', async () => {
+test('skills do not hard-require Claude-only tools', async () => {
   for (const name of ['loop-plan', 'loop-debug', 'loop-audit']) {
-    const path = join(root, 'skills', 'pi', name, 'SKILL.md');
-    const text = await readFile(path, 'utf8');
+    const text = await readFile(join(root, 'skills', name, 'SKILL.md'), 'utf8');
     assert.match(text, new RegExp(`name: ${name}`));
-    assert.doesNotMatch(text, /allowed-tools:|AskUserQuestion|ExitPlanMode|subagent-driven-development/);
+    assert.doesNotMatch(text, /allowed-tools:|ExitPlanMode|subagent-driven-development/);
   }
 });

@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan for hidden Unicode
-        run: python3 ci/check-unicode.py skills/ agents/ extensions/
+        run: python3 ci/check-unicode.py skills/ agents/ extensions/ hooks/
 
   skill-safety:
     name: Skill shell-block safety
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan for dangerous shell commands
-        run: python3 ci/check-skill-safety.py skills/ agents/ extensions/
+        run: python3 ci/check-skill-safety.py skills/ agents/ extensions/ hooks/
 
   checksum-verify:
     name: Checksum integrity
@@ -86,6 +86,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Version and size gates
+        run: |
+          python3 ci/version-sync.py --check
+          python3 ci/check-skill-size.py
       - name: Run CI script tests
         run: |
           python3 test/check-unicode.test.py
