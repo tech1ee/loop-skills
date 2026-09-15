@@ -3,8 +3,7 @@ name: typescript-strict-mode-auditor
 description: >
   Use when auditing TypeScript type safety gaps — implicit any, unsafe casts,
   ts-ignore usage, missing strict compiler settings. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: typescript strict; any creep; ts-ignore; unsafe cast; typescript audit.
-  Use whenever the task fits. TRIGGER when: typescript strict; any creep; ts-ignore; unsafe cast; typescript audit.
+  TRIGGER: typescript strict; any creep; ts-ignore; unsafe cast; typescript audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

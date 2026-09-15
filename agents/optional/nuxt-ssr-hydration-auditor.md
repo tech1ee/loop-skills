@@ -3,8 +3,7 @@ name: nuxt-ssr-hydration-auditor
 description: >
   Use when auditing Nuxt SSR/CSR hydration mismatches — browser-only code in SSR context,
   useAsyncData patterns, server-guard misuse. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: nuxt ssr; hydration mismatch; useAsyncData; server-only guard; nuxt audit.
-  Use whenever the task fits. TRIGGER when: nuxt ssr; hydration mismatch; useAsyncData; server-only guard; nuxt audit.
+  TRIGGER: nuxt ssr; hydration mismatch; useAsyncData; server-only guard; nuxt audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

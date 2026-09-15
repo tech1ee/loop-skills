@@ -3,8 +3,7 @@ name: python-async-correctness-auditor
 description: >
   Use when auditing Python async correctness — blocking I/O in async context,
   missing await, asyncio anti-patterns. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: python async; asyncio; blocking call; missing await; python audit.
-  Use whenever the task fits. TRIGGER when: python async; asyncio; blocking call; missing await; python audit.
+  TRIGGER: python async; asyncio; blocking call; missing await; python audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

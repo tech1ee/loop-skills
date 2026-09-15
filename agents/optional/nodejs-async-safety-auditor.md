@@ -3,8 +3,7 @@ name: nodejs-async-safety-auditor
 description: >
   Use when auditing Node.js async safety — unhandled rejections, blocking event loop,
   callback/async mixing. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: node.js async; unhandled rejection; blocking event loop; nodejs audit.
-  Use whenever the task fits. TRIGGER when: node.js async; unhandled rejection; blocking event loop; nodejs audit.
+  TRIGGER: node.js async; unhandled rejection; blocking event loop; nodejs audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

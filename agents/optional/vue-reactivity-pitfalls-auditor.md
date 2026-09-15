@@ -3,8 +3,7 @@ name: vue-reactivity-pitfalls-auditor
 description: >
   Use when auditing Vue reactivity pitfalls — destructured reactive state loss,
   watch cleanup, computed side effects. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: vue reactivity; composition api; watch cleanup; reactive state; vue audit.
-  Use whenever the task fits. TRIGGER when: vue reactivity; composition api; watch cleanup; reactive state; vue audit.
+  TRIGGER: vue reactivity; composition api; watch cleanup; reactive state; vue audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch

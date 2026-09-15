@@ -3,8 +3,7 @@ name: react-hooks-misuse-auditor
 description: >
   Use when auditing React hooks misuse in React codebases — stale closures,
   missing dependency arrays, hooks called conditionally. Single concern. Read-only.
-  Use whenever the task fits. TRIGGER when: react hooks; useEffect; stale closure; missing deps; react audit.
-  Use whenever the task fits. TRIGGER when: react hooks; useEffect; stale closure; missing deps; react audit.
+  TRIGGER: react hooks; useEffect; stale closure; missing deps; react audit.
 model: sonnet
 tools: Read, Grep, Glob
 disallowedTools: Edit, Write, Bash, WebFetch, WebSearch
