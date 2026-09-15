@@ -33,7 +33,7 @@ Any `false` item drives the next targeted search, run by you or one follow-up ex
 
 ## Citation check
 
-If `verify-code-research.py` is available (see `references/platforms.md` for the helper path), run it on each explorer report. Drop `FAIL` citations and list them as gaps.
+If `verify-code-research.py` is available (see `references/platforms.md` for the helper path), run it on each explorer report. It matches claim text against the cited line, so paraphrased claims fail even when the citation is right: re-open each `FAIL` yourself, keep those the line supports, and list the rest as gaps.
 
 ## Output
 

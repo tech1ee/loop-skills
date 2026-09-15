@@ -60,7 +60,6 @@ The installer must:
 - Never run automatically on `npm install` (no `postinstall`)
 - Only write to `~/.claude/` — no system directories, no root required
 - Show every file write before it happens
-- Ask for confirmation before overwriting existing files (unless `--force`)
 
 ### CI script changes
 

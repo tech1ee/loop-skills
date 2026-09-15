@@ -29,8 +29,8 @@
   ],
   "open_questions": [],
   "budget": {"explorers_used": 2, "rounds_used": 1, "research_calls_used": 0},
-  "stopping_reason": {"explore": null, "research": null},
-  "review": {"current_high": 0, "prev_high": null, "cycles": 1, "stall_reentries": 0},
+  "stopping_reason": {"seed": "state created", "explore": "closure true", "clarify": null, "research": null, "plan": null},
+  "review": {"current_high": null, "prev_high": null, "cycles": 0, "stall_reentries": 0},
   "tasks": [
     {"id": "T1", "status": "done", "attempt": 1, "checkpoint": "2026-09-15T10:12:00Z", "result": "DONE"},
     {"id": "T2", "status": "running", "attempt": 1, "checkpoint": "2026-09-15T10:20:00Z", "result": null}
@@ -48,7 +48,8 @@ Field rules:
 - `tier`: `quick` | `standard` | `high-risk`. Changing it requires a `tier_reason` field.
 - `evidence[].status`: `open` | `supported` | `contradicted`.
 - `tasks[].status`: `pending` | `running` | `done` | `blocked`. `tasks[].result`: `DONE` | `DONE_WITH_CONCERNS` | `NEEDS_CONTEXT` | `BLOCKED` | null.
-- `review.current_high` comes from the last line of the latest review, never from counting the plan file.
+- `stopping_reason` has one key per phase that has ended (`seed`, `explore`, `clarify`, `research`, `plan`, `gate`, `execute`, `verify`); unfinished phases are absent or null.
+- `review.current_high` is null until the first self-review, then the value from the review's last line; never a count of items in the plan file.
 
 loop-debug adds `bug_signature`, `hypotheses[]` (`{id, claim, discriminator, status}` with status `open` | `confirmed` | `disproven`), `red_evidence` (command and failure output), and `fix_attempts`.
 

@@ -21,7 +21,7 @@ Rollback: <how to undo if verification fails>
 Done when: <observable outcome, tied to a must_haves truth or key_link>
 ```
 
-Tasks that legitimately need no tests (config-only, docs-only, generated code, formatter-only) say `Tests: none — <reason>`.
+Tasks that legitimately need no tests (config-only, docs-only, generated code, formatter-only) say `Tests: none — <reason>`. At `quick` tier the same worker writes tests and code; the independence rule then means expected values come from the spec or a hand computation, never from running the implementation.
 
 ## Sections
 
@@ -40,4 +40,4 @@ If the project keeps ADRs, write one per architecture decision from clarify in t
 
 Check every task against `must_haves`: each truth has at least one task whose `Done when` demonstrates it; every `Files:` path exists or is created by an earlier task; no placeholder text; parallel pairs have disjoint files. Fix inline. Do not loop on self-review; the gate and the verifier are the next checks.
 
-Emit `current_high=<N>` as the last line of the review: N is the count of unresolved items that would block execution.
+End your review output with the line `current_high=<N>` (N = unresolved items that would block execution) and write N to `state.review.current_high`. The plan file gets a short `### Self-review` note, not the count.
